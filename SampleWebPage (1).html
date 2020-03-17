@@ -4,6 +4,22 @@
   html{
     scroll-behavior: smooth;
   }
+  h2 {
+     /*text-align: center;*/
+     color: blue;
+     vertical-align: text-top;
+     
+  }
+  body {
+  background-color: rgb(73, 156, 184);
+}
+#success {
+  vertical-align: text-top ;
+  color :blue;
+}
+#error {
+  color :crimson;
+}
 </style>
 
 <head>
@@ -43,14 +59,16 @@
       <div id="app">
         <div  id="my_camera"></div><br/>
         <input type=button class="buttons" value="Take Photo" onClick="take_snapshot()" style="margin-left:39%;">
-        
-        
+      </br>
+    </br>
+  
        <div id="results" style="margin-left:39%;" ></div>
          <input class="buttons" type=button value="Authenticate"id="authBtn" onClick="auth()" style="margin-left:39%;">
         </div>
-
-        <h2 id="success" class="hero-text" style="display:none;">You have been successfully authorized!! </h2>
-        <h2 id="error" class="hero-text" style="display:none;">You are not authorized ! </h2>
+        <div>
+        <h2 id="success" style="display:none;">You have been successfully authorized!! </h2>
+        <h2 id="error" style="display:none;">You are not authorized ! </h2>
+        </div>
     </div>
     <div id="menu3" class="tab-pane fade">
       <h3>Have a Query?</h3>

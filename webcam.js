@@ -6,7 +6,7 @@ window.onload = function() {
                         myParam = urlParams.get('param1');
 }
 
-var  imageList =[];
+var imageList =[];
 var images='';
 var folderBucketName = 'storewebcamimg';
 var bucketRegion = 'us-east-2';
@@ -126,12 +126,14 @@ function auth(){
 //function to do the facial comparison
 function authenticate(newstr){
     var res = newstr.split(',');
-    var match;
+    var match = false;
+    var s3_imagename = '';
+    var num_compares = 0;
     
       
        for(var i=0;i<res.length;i++){
-       console.log('res[i]...'+res[i]);
-       const client = new AWS.Rekognition();
+        console.log('res[i]...' + res[i]);
+        const client = new AWS.Rekognition();
       
        const params = {
         SimilarityThreshold: 95,
@@ -149,46 +151,74 @@ function authenticate(newstr){
          }
        }
         client.compareFaces(params, function(err, response) {
+         num_compares++;
          if (err) {
-        console.log( "params =  " + JSON.stringify(params));
+           console.log( "params =  " + JSON.stringify(params));
            console.log(err, err.stack); // an error occurred
          } else {
-           console.log("response" + response.data)
-           console.log(response)
-          
-         console.log(response.FaceMatches);
-           response.FaceMatches.forEach(data => {
-             let position   = data.Face.BoundingBox
-             let similarity = data.Similarity
+           console.log("params=  " + JSON.stringify(params));
+           console.log("response JSON =  " + JSON.stringify(response));
+           console.log("response " + response);
+        //  console.log(response.FaceMatches);
+        //    response.FaceMatches.forEach(data => {
+        //      let position   = data.Face.BoundingBox
+        //      let similarity = data.Similarity
             
-             console.log(`The face at: ${position.Left}, ${position.Top} matches with ${similarity} % confidence`)
-            match =true;
-            console.log(match);
-           }) // for response.faceDetails
-           if(response.FaceMatches.length == 0) {
-           match=false;
+        //      console.log(`The face at: ${position.Left}, ${position.Top} matches with ${similarity} % confidence`)
+        //     match =true;
+        //     console.log(match);
+        //    }) // for response.faceDetails
+           if(response.FaceMatches.length > 0) {
+            match=true;
+            s3_imagename = params.TargetImage.S3Object.Name;
+            console.log(s3_imagename)
            }
-           newList.push(match);
-           console.log(newList.length);
-           console.log(res.length);
-           if(newList.length == res.length) {
+
+           if (num_compares == res.length)
+           {
+             if (match)
+             {
+               successFunction();
+             }
+             else
+             {
+              errorFunction();
+             }
+           }
+           final = match;
+           return match;
+          //  newList.push(match);
+          //  console.log(newList.length);
+          //  console.log(newList);
+          //  console.log(res);
+          //  let index;
+           //Fetching the name of the matched face in order to display image from s3
+          //  for(let i=0;i < newList.length;i++)
+          //  {
+          //    console.log(i);
+          //    if(newList[i] === true)
+          //    index = i;
+          //    console.log(index)
+          //    break;
+          //  }
+
+          //  if(newList.length == res.length) {
            
-                var temp = newList.includes(true);
-                if(temp){
-                    successFunction();
-                }	
-                 else{
-                errorFunction();
-           }
-           }
+          //       var temp = newList.includes(true);
+          //       if(temp){
+          //           successFunction();
+          //       }	
+          //        else{
+          //       errorFunction();
+          //  }
+          //  }
           
           //final = match;
          // return match;
          } 
        });
-        
+       
        }
-    
       }
       function successFunction(){
         console.log("success")

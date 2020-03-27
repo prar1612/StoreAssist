@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+.my_camera{
+ width: 320px;
+ height: 240px;
+ border: 1px solid black;
+ margin-left:39%;
+}
+</style>
+<head>
+ <script src="jquery-3.1.1.min.js"></script>
+    <script src="knockout-3.4.2.js"></script>
+	<script type="text/javascript" src="webcam.min.js"></script>
+	 <script src="https://sdk.amazonaws.com/js/aws-sdk-2.283.1.min.js"></script>
+    <script type="text/javascript">
+	
+	var userName ;
+	function register(){
+		//alert('hey');
+		document.getElementById("regForm").style.display = "block";
+		document.getElementById("succMsg").style.display = "none";
+		
+		
+		
+	}
+	
+  
+		jQuery.support.cors = true;
+		$(document).ready(function() {
+			 $(".nav-tabs a").click(function(){
+    $(this).tab('show');
+	
+  });
+  
+				
+				
+			var customerDetailsViewModel = function() {
+				var self = this;
+				self.EmailID = ko.observable("");
+				self.FirstName = ko.observable("");
+				self.LastName = ko.observable("");
+				self.PhoneNum = ko.observable("");
+				self.SuccessMessage = ko.observable("");
+				self.SaveCustomerDetails = function () { 
+						//alert('Hi');
+					var fn = document.getElementById("fName").value;
+					var ln = document.getElementById("lName").value;
+					var em = document.getElementById("email").value;
+					var ph = document.getElementById("phone").value;
+					if(fn == '' || ln == '' || ph == '' || em == ''){
+						alert('Please fill in all the fields before submitting.')
+					}
+					else{
+						
+							var CustomerDetail = {
+							EmailID: self.EmailID(),
+							FirstName: self.FirstName(),
+							LastName: self.LastName(),
+							PhoneNum: self.PhoneNum()
+						
+						}
+						$.ajax({
+							crossDomain: true,
+						
+							url: 'https://ar0o3d9r6k.execute-api.us-east-2.amazonaws.com/DEV/postcustomerdetails',
+							
+							
+							cache: false,
+							type: 'POST', 
+							data: ko.toJSON(CustomerDetail),
+							success: function (data) {             
+										userName = document.getElementById("email").value;
+										console.log(userName);
+								self.SuccessMessage(data)
+									self.EmailID('');
+									self.FirstName('');
+									self.LastName('');
+									self.PhoneNum('');
+									document.getElementById("regForm").style.display = "none";
+									document.getElementById("succMsg").style.display = "block";
+									document.getElementById("results").innerHTML = "";
+									 Webcam.set({
+									  width: 320,
+									  height: 240,
+									  image_format: 'jpeg',
+									  jpeg_quality: 90
+									 });
+									 Webcam.attach( '#my_camera' );
+								
+							}
+							}).fail(
+							
+							
+							function(xhr, textStatus, err){
+							alert("Error happened "+err);
+							
+						});
+						}
+				};
+			}
+			 var viewModel = new customerDetailsViewModel();
+            ko.applyBindings(viewModel);
+		});
+	function take_snapshot() {
+ 
+ // take snapshot and get image data
+ Webcam.snap( function(data_uri) {
+  // display results in page
+  document.getElementById('results').innerHTML = 
+  '<img src="'+data_uri+'"/>';
+  console.log(data_uri);
+  console.log(JSON.stringify(dataURItoBlob(data_uri)));
+  addFile(dataURItoBlob(data_uri))
+  } );
+ // document.getElementById("authBtn").style="display:block;margin-left:39%;";
+}
+
+function dataURItoBlob(dataURI) {
+    // convert base64/URLEncoded data component to raw binary data held in a string
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+    else
+        byteString = unescape(dataURI.split(',')[1]);
+
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    // write the bytes of the string to a typed array
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+	
+    return new Blob([ia], {type:mimeString});
+}
+function addFile(fileToUpload) {
+
+console.log(userName);
+//should name the image using cognito user's username
+  var fileName = userName+'.jpg';
+ 
+  var fileKey = fileName;
+ //update config
+AWS.config.update({
+  region: 'us-east-2',
+    accessKeyId:'AKIAWYV5ST2BG4QBMU67',
+     secretAccessKey: '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',
+ 
+});
+
+var s3 = new AWS.S3({
+  params: {Bucket: 'rewardsprgmcustimages'}
+});
+
+	s3.upload({
+    Key: fileKey,
+    Body: fileToUpload,
+	
+  }, function(err, data) {
+    if (err) {
+		
+      return alert('There was an error uploading your image: ', err.message);
+    }
+	else{
+		console.log('Successfully uploaded image');
+		alert('Successfully registered New user!');
+		document.getElementById("regForm").style.display = "block";
+		document.getElementById("succMsg").style.display = "none";
+    }
+   
+  });
+  
+  
+  
+}
+	</script>
+  <title>StoreAssist</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container" >
+  <h2>StoreAssist</h2>
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#home">Home</a></li>
+    <li onclick="register();"><a href="#menu1">Add a New Member</a></li>
+    <li><a href="#menu2">Retrieve Member</a></li>
+    <li><a href="#menu3">Ask me!</a></li>
+	<li><a href="#menu4">Post Offers</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="home" class="tab-pane fade in active" >
+      <h3>Welcome!</h3>
+      <p>One stop assistant to help you run your store better!</p>
+    </div>
+    <div id="menu1" class="tab-pane fade" >
+    
+	<form id="regForm">
+	<h2>Register A New Customer</h2>
+	 <div class="form-group">
+      <label for="fName">First Name:</label>
+      <input type="text" class="form-control" id="fName" placeholder="Enter First Name" name="fName" data-bind='value: FirstName' required>
+    </div>
+	<div class="form-group">
+      <label for="lName">Last Name:</label>
+      <input type="text" class="form-control" id="lName" placeholder="Enter Last Name" name="lName" data-bind='value: LastName' required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" class="form-control" id="email" placeholder="Enter Email" name="email" data-bind='value: EmailID' required>
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone Number:</label>
+      <input type="tel" class="form-control" id="phone" placeholder="Enter Phone Number" name="phone" data-bind='value: PhoneNum' required>
+    </div>
+    
+    <button type="submit" class="btn btn-default" data-bind="click: $root.SaveCustomerDetails">Submit</button>
+	
+  </form>
+  <div id="succMsg">
+  hey
+  <h2><span  style ="color: darkolivegreen" data-bind='text : SuccessMessage' /></h2><br/>
+  <h2>Upload a photo</h2><br/>
+  <div  id="my_camera"></div><br/>
+  <button type="submit" class="btn btn-default" value="Take Photo" onClick="take_snapshot()" >Take photo</button>
+<div id="results" ></div>
+  </div>
+    </div>
+    <div id="menu2" class="tab-pane fade">
+      <h3>Retrieve a member</h3>
+      <p>Jyothi</p>
+    </div>
+    <div id="menu3" class="tab-pane fade">
+      <h3>Have a Query?</h3>
+      <p>Akanksha</p>
+    </div>
+	 <div id="menu4" class="tab-pane fade">
+      <h3>Post To Twitter</h3>
+      <p>Manasi</p>
+    </div>
+  </div>
+</div>
+
+
+
+</body>
+</html>

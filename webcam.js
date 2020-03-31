@@ -1,10 +1,10 @@
  
 var myParam = 'sulalitha01@gmail.com';
 var emailId = '';
-window.onload = function() {
-                        var urlParams = new URLSearchParams(Window.location.search);
-                        myParam = urlParams.get('param1');
-}
+// window.onload = function() {
+//                         var urlParams = new URLSearchParams(Window.location.search);
+//                         myParam = urlParams.get('param1');
+// }
 
 var imageList =[];
 var images='';
@@ -15,8 +15,8 @@ var newList =[];
 //update config
 AWS.config.update({
 region: bucketRegion,
-accessKeyId: '',
-    secretAccessKey: '' ,
+accessKeyId: 'AKIAWYV5ST2BHEB6JUTC',
+secretAccessKey: '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' ,
 
 });
 
@@ -63,6 +63,7 @@ function addFile(fileToUpload) {
         if (err) {
             
           return alert('There was an error uploading your image: ', err.message);
+          console.log(err)
         }
         console.log('Successfully uploaded image');
         
@@ -178,7 +179,7 @@ function authenticate(newstr){
            {
              if (match)
              {
-               successFunction();
+               successFunction(s3_imagename);
              }
              else
              {
@@ -220,12 +221,16 @@ function authenticate(newstr){
        
        }
       }
-      function successFunction(){
+      function successFunction(s3_imagename){
         console.log("success")
         document.getElementById("app").style="display:none;";
         document.getElementById("my_camera").style = "display:none";
         document.getElementById("authBtn").style = "display:none";
         document.getElementById("success").style="display:block;";
+        //getDetails(s3_imagename);
+        emailId = s3_imagename.split(".jpg")[0];
+        display_details(s3_imagename);
+        
        }
       function errorFunction(){
       //alert(JSON.stringify(TargetImage));
@@ -247,5 +252,106 @@ function authenticate(newstr){
       // successful response
     });
         console.log(emailId);
-        
+}
+
+function display_details(s3_imagename)
+{
+  email_id = s3_imagename.split(".jpg")[0];
+  var mimes = {
+    'jpeg': 'data:image/jpeg;base64,'
+  };
+  
+  AWS.config.update({
+      signatureVersion: 'v4',
+      region: 'us-east-1',
+      accessKeyId: 'AKIAWYV5ST2BHEB6JUTC',
+      secretAccessKey: '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'
+  });
+  
+  var bucket = new AWS.S3({params: {Bucket: 'rewardsprgmcustimages'}});
+  
+  function encode(data)
+  {
+      var str = data.reduce(function(a,b){ return a+String.fromCharCode(b) },'');
+      return btoa(str).replace(/.{76}(?=.)/g,'$&\n');
+  }
+  
+  function getUrlByFileName(fileName,mimeType) {
+      return new Promise(
+          function (resolve, reject) {
+              bucket.getObject({Key: fileName}, function (err, file) {
+                  var result =  mimeType + encode(file.Body);
+                  resolve(result)
+              });
+
+          }
+      );
+  }
+  
+  getUrlByFileName(s3_imagename, mimes.jpeg).then(function(data) {
+      var image = document.getElementById("image");
+      image.src = data;
+      image.height = image.width = 200;
+      document.getElementById("email_col").innerText = emailId;
+  });
+
+  displayUserInfo(emailId);
+  document.getElementById("image").style = "display:block";
+  document.getElementById("info").style = "display:block";
+}
+
+function displayUserInfo(emailId)
+{
+  var request = new XMLHttpRequest()
+  request.open('GET', 'https://xmlsjm85s6.execute-api.us-east-2.amazonaws.com/prod/customers?Email_ID=' + emailId, true);
+  request.onload = function()
+  {
+    var data = JSON.parse(this.response);
+    if (request.status >= 200 && request.status < 400) {
+        var user_info = data.Item;
+        document.getElementById("first_name_col").innerHTML = user_info.FirstName;
+        document.getElementById("last_name_col").innerHTML = user_info.LastName;
+        document.getElementById("phone_col").innerHTML = user_info.PhoneNumber;
+        document.getElementById("points_col").innerHTML = user_info.RewardPoints;      
+    } else {
+      console.log('error while fetching data ' + request.status);
+    };  
+  }
+  request.send();
+}
+
+function addPoints()
+{
+  var request = new XMLHttpRequest()
+  request.open('GET', 'https://xmlsjm85s6.execute-api.us-east-2.amazonaws.com/prod/customers?Email_ID=' + emailId, true);
+  request.onload = function()
+  {
+    var data = JSON.parse(this.response);
+    if (request.status >= 200 && request.status < 400) {
+      var add_points = parseInt(document.getElementById("add_rewards").value);
+      var cur_points = data.Item.RewardPoints;
+      var add_request = new XMLHttpRequest()
+      var total_points = cur_points + add_points;
+      console.log("cur_points = " + cur_points);
+      console.log("add_points = " + add_points);
+      console.log("total points = " + total_points);
+      add_request.open('PATCH', 'https://xmlsjm85s6.execute-api.us-east-2.amazonaws.com/prod/customers?Email_ID='+emailId+'&rewardsPoint=' + total_points);
+      add_request.onload = function()
+      {
+        if (add_request.status >= 200 && add_request.status < 400)
+        {
+          document.getElementById("points_col").innerHTML = total_points;
+          alert("Succesfully added reward points");
+        }
+        else
+        {
+          alert("Unable to add reward points. Please retry after some time");
+        }
       }
+      add_request.send();
+    } else {
+      console.log('error while fetching data ' + request.status);
+    };  
+  }
+  request.send();
+}

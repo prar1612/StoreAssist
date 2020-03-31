@@ -65,8 +65,36 @@
        <div id="results" style="margin-left:39%;" ></div>
          <input class="buttons" type=button value="Authenticate"id="authBtn" onClick="auth()" style="margin-left:39%;">
         </div>
-        <div>
+        <img>
         <h2 id="success" style="display:none;">You have been successfully authorized!! </h2>
+        <img id="image" style="display:none"></img>
+        <div id="info" style="display:none">
+          <br/><br/><br/><br/><br/>
+          <table id = "info_table">
+            <tr>
+              <th>Email ID: </th>
+              <td id="email_col"></td>
+            </tr>
+            <tr>
+              <th>First Name: </th>
+              <td id="first_name_col"></td>
+            </tr>
+            <tr>
+              <th>Last Name: </th>
+              <td id="last_name_col"></td>
+           </tr>
+           <tr>
+              <th>Phone: </th>
+              <td id="phone_col"></td>
+            </tr>
+            <tr>
+              <th>Points: </th>
+              <td id="points_col"></td>
+            </tr>
+          </table>
+          <input id="add_rewards" type="text"/>&nbsp;&nbsp;<input type="submit" value="Add" onclick="addPoints()"/><br/>
+          <input id="redeem_rewards" type="text"/>&nbsp;&nbsp;<input type="submit" value="Redeem" onclick="redeemPoints()"/><br/>
+        </div>
         <h2 id="error" style="display:none;">You are not authorized ! </h2>
         </div>
     </div>
@@ -87,6 +115,7 @@ $(document).ready(function(){
     $(this).tab('show');
   });
 });
+
 </script>
 <!-- Webcam.min.js -->
 <script type="text/javascript" src="./webcam.min.js"></script>
@@ -97,6 +126,3 @@ $(document).ready(function(){
 
 </body>
 </html>
-
-
-

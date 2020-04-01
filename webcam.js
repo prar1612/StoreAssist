@@ -355,3 +355,46 @@ function addPoints()
   }
   request.send();
 }
+
+function redeemPoints()
+{
+  console.log("inside redeem")
+  var request = new XMLHttpRequest()
+  request.open('GET', 'https://xmlsjm85s6.execute-api.us-east-2.amazonaws.com/prod/customers?Email_ID=' + emailId, true);
+  request.onload = function(){
+  var data = JSON.parse(this.response);
+  if (request.status >= 200 && request.status < 400) {
+    var redeem_points = parseInt(document.getElementById("redeem_rewards").value);
+    var cur_points = data.Item.RewardPoints;
+    console.log("current_points = " +cur_points);
+    var redeem_request = new XMLHttpRequest()
+     if(redeem_points > cur_points){
+       alert("can not redeem points,u have only" + cur_points);
+     }
+     else{
+       var total_points = cur_points - redeem_points;
+       redeem_request.open('PATCH', 'https://xmlsjm85s6.execute-api.us-east-2.amazonaws.com/prod/customers?Email_ID='+emailId+'&rewardsPoint=' + total_points);
+       redeem_request.onload = function()
+      {
+        if (redeem_request.status >= 200 && redeem_request.status < 400)
+        {
+          document.getElementById("points_col").innerHTML = total_points;
+          alert("Succesfully redeemed reward points");
+        }
+        else
+        {
+          alert("Unable to redeem. Please retry after some time");
+        }
+      }
+      redeem_request.send();
+    }
+
+
+     }
+     
+     else {
+      console.log('error while fetching data ' + request.status);
+    }; 
+  } 
+  request.send();   
+}

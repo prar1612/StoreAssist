@@ -15,8 +15,8 @@ var newList =[];
 //update config
 AWS.config.update({
 region: bucketRegion,
-accessKeyId: '',
-secretAccessKey: '' ,
+accessKeyId: 'AKIAWYV5ST2BD2TSD24M',
+secretAccessKey: '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' ,
 
 });
 
@@ -264,8 +264,8 @@ function display_details(s3_imagename)
   AWS.config.update({
       signatureVersion: 'v4',
       region: 'us-east-1',
-      accessKeyId: '',
-      secretAccessKey: ''
+      accessKeyId: 'AKIAWYV5ST2BD2TSD24M',
+      secretAccessKey: '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'
   });
   
   var bucket = new AWS.S3({params: {Bucket: 'rewardsprgmcustimages'}});

@@ -129,8 +129,8 @@ console.log(userName);
  //update config
 AWS.config.update({
   region: 'us-east-2',
-    accessKeyId:'AKIAWYV5ST2BF3JRNIER',
-     secretAccessKey: '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',
+    accessKeyId:'',
+     secretAccessKey: '',
  
 });
 
@@ -192,8 +192,8 @@ var myParam = 'sulalitha01@gmail.com';
       var fileKey = fileName;
      AWS.config.update({
   region: 'us-east-2',
-    accessKeyId:'AKIAWYV5ST2BF3JRNIER',
-     secretAccessKey: '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',
+    accessKeyId:'',
+     secretAccessKey: '',
  
 });
 
@@ -397,8 +397,8 @@ function display_details(s3_imagename)
   AWS.config.update({
       signatureVersion: 'v4',
       region: 'us-east-1',
-      accessKeyId: 'AKIAWYV5ST2BF3JRNIER',
-      secretAccessKey: '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'
+      accessKeyId: '',
+      secretAccessKey: ''
   });
   
   var bucket = new AWS.S3({params: {Bucket: 'rewardsprgmcustimages'}});
@@ -514,6 +514,7 @@ function redeemPoints()
     var redeem_request = new XMLHttpRequest()
      if(redeem_points > cur_points){
        alert("can not redeem points,u have only" + cur_points);
+       document.getElementById("redeem_rewards").value ="";
      }
      else{
        var total_points = cur_points - redeem_points;
@@ -528,6 +529,7 @@ function redeemPoints()
           document.getElementById("success").style.display="none";
           document.getElementById("image").style.display="none";
           document.getElementById("info").style.display="none";
+          document.getElementById("redeem_rewards").value ="";
         }
         else
         {
@@ -536,6 +538,7 @@ function redeemPoints()
           document.getElementById("success").style.display="none";
           document.getElementById("image").style.display="none";
           document.getElementById("info").style.display="none";
+          document.getElementById("redeem_rewards").value ="";
         }
       }
       redeem_request.send();

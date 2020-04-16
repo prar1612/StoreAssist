@@ -129,8 +129,8 @@ console.log(userName);
  //update config
 AWS.config.update({
   region: 'us-east-2',
-    accessKeyId:'access',
-     secretAccessKey: 'secret',
+    accessKeyId:'',
+     secretAccessKey: '',
  
 });
 
@@ -192,8 +192,8 @@ var myParam = 'sulalitha01@gmail.com';
       var fileKey = fileName;
      AWS.config.update({
   region: 'us-east-2',
-    accessKeyId:'access',
-     secretAccessKey: 'secret',
+    accessKeyId:'',
+     secretAccessKey: '',
  
 });
 
@@ -354,6 +354,7 @@ function authenticate(newstr){
         document.getElementById("app").style="display:none;";
         document.getElementById("my_camera").style = "display:none";
         document.getElementById("authBtn").style = "display:none";
+        document.getElementById("error").style = "display:none";
         document.getElementById("success").style="display:block;";
         //getDetails(s3_imagename);
         emailId = s3_imagename.split(".jpg")[0];
@@ -362,8 +363,12 @@ function authenticate(newstr){
        }
       function errorFunction(){
       //alert(JSON.stringify(TargetImage));
-        document.getElementById("app").style="display:none;";
+        //document.getElementById("app").style="display:none;";
+        
         document.getElementById("error").style="display:block;";
+        
+        alert("You Are Not Authorized");
+        document.getElementById("error").style="display:none;";
         
         var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
         var params = {
@@ -392,8 +397,8 @@ function display_details(s3_imagename)
   AWS.config.update({
       signatureVersion: 'v4',
       region: 'us-east-1',
-      accessKeyId: 'access',
-      secretAccessKey: 'secret'
+      accessKeyId: '',
+      secretAccessKey: ''
   });
   
   var bucket = new AWS.S3({params: {Bucket: 'rewardsprgmcustimages'}});
@@ -457,7 +462,7 @@ function addPoints()
     var data = JSON.parse(this.response);
     if (request.status >= 200 && request.status < 400) {
       var add_points = parseInt(document.getElementById("add_rewards").value);
-      var cur_points = data.Item.RewardPoints;
+      var cur_points = parseInt(data.Item.RewardPoints);
       var add_request = new XMLHttpRequest()
       var total_points = cur_points + add_points;
       console.log("cur_points = " + cur_points);
@@ -470,10 +475,21 @@ function addPoints()
         {
           document.getElementById("points_col").innerHTML = total_points;
           alert("Succesfully added reward points");
+          document.getElementById("app").style.display="block";
+          document.getElementById("success").style.display="none";
+          document.getElementById("image").style.display="none";
+          document.getElementById("info").style.display="none";
+          document.getElementById("add_rewards").value ="";
+          
         }
         else
         {
           alert("Unable to add reward points. Please retry after some time");
+          document.getElementById("app").style.display="block";
+          document.getElementById("success").style.display="none";
+          document.getElementById("image").style.display="none";
+          document.getElementById("info").style.display="none";
+          document.getElementById("add_rewards").value ="";
         }
       }
       add_request.send();
@@ -498,6 +514,7 @@ function redeemPoints()
     var redeem_request = new XMLHttpRequest()
      if(redeem_points > cur_points){
        alert("can not redeem points,u have only" + cur_points);
+       document.getElementById("redeem_rewards").value ="";
      }
      else{
        var total_points = cur_points - redeem_points;
@@ -508,10 +525,20 @@ function redeemPoints()
         {
           document.getElementById("points_col").innerHTML = total_points;
           alert("Succesfully redeemed reward points");
+          document.getElementById("app").style.display="block";
+          document.getElementById("success").style.display="none";
+          document.getElementById("image").style.display="none";
+          document.getElementById("info").style.display="none";
+          document.getElementById("redeem_rewards").value ="";
         }
         else
         {
           alert("Unable to redeem. Please retry after some time");
+          document.getElementById("app").style.display="block";
+          document.getElementById("success").style.display="none";
+          document.getElementById("image").style.display="none";
+          document.getElementById("info").style.display="none";
+          document.getElementById("redeem_rewards").value ="";
         }
       }
       redeem_request.send();

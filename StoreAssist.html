@@ -85,16 +85,17 @@
   </form>
   <div id="succMsg">
   <h2><span  style ="color: darkolivegreen" data-bind='text : SuccessMessage' /></h2><br/>
-  <h2 style="margin-left:42%;">Upload a photo</h2><br/>
+  <h2>Upload a photo</h2><br/>
   <div  id="my_camera"></div><br/>
-  <button type="submit" class="btn btn-default" style="margin-left:46%;" value="Take Photo" onClick="take_snapshot()" >Take photo</button><br/>
-<div id="results" style="margin-left:40%;" ></div>
+  <button type="submit" class="btn btn-default" value="Take Photo" onClick="take_snapshot()" >Take photo</button>
+<div id="results" ></div>
   </div>
     </div>
     <div id="menu2" class="tab-pane fade">
       <h3>Retrieve a member</h3>
        <div class="hero-image"></div>
       <div id="app">
+        <h2 id="error" style="display:none;">You are not authorized ! </h2>
         <div  id="my_camera1"></div><br/>
         <input type=button class="buttons" value="Take Photo" onClick="take_snapshot1()" style="margin-left:39%;">
       </br>
@@ -133,7 +134,7 @@
           <input id="add_rewards" type="text"/>&nbsp;&nbsp;<input type="submit" value="Add" onclick="addPoints()"/><br/>
           <input id="redeem_rewards" type="text"/>&nbsp;&nbsp;<input type="submit" value="Redeem" onclick="redeemPoints()"/><br/>
         </div>
-        <h2 id="error" style="display:none;">You are not authorized ! </h2>
+        <!--<h2 id="error" style="display:none;">You are not authorized ! </h2>-->
     </div>
     <div id="menu3" class="tab-pane fade">
       <h3>Have a Query?</h3>

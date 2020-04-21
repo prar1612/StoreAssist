@@ -192,7 +192,7 @@ var myParam = 'sulalitha01@gmail.com';
       var fileKey = fileName;
      AWS.config.update({
   region: 'us-east-2',
-    accessKeyId:'Access',
+    accessKeyId:'access',
      secretAccessKey: 'secret',
  
 });
@@ -552,5 +552,12 @@ function redeemPoints()
     }; 
   } 
   request.send();   
+}
+
+function cancel(){
+          document.getElementById("app").style.display="block";
+          document.getElementById("success").style.display="none";
+          document.getElementById("image").style.display="none";
+          document.getElementById("info").style.display="none";
 }
 //Jyothi- JS end

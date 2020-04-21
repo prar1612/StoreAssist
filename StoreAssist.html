@@ -14,12 +14,13 @@
   background-color: rgb(73, 156, 184);
 }
 #success {
-  vertical-align: text-top ;
+  /*vertical-align: text-top ;*/
   color :blue;
 }
 #error {
   color :crimson;
 }
+
 </style>
 <head>
  <script src="jquery-3.1.1.min.js"></script>
@@ -99,46 +100,55 @@
   </div>
     </div>
     <div id="menu2" class="tab-pane fade">
-      <h3>Retrieve a member</h3>
+      <!--<h3>Retrieve a member</h3>-->
        <div class="hero-image"></div>
       <div id="app">
+        <h2 id="error" style="display:none;">You are not authorized ! </h2>
+      </br>
         <div  id="my_camera1"></div><br/>
         <input type=button class="buttons" value="Take Photo" onClick="take_snapshot1()" style="margin-left:39%;">
       </br>
     </br>
   
        <div id="results1" style="margin-left:39%;" ></div>
+        </br>
          <input class="buttons" type=button value="Authenticate"id="authBtn" onClick="auth()" style="margin-left:39%;">
         </div>
-		<img>
+		    <img>
         <h2 id="success" style="display:none;">You have been successfully authorized!! </h2>
         <img id="image" style="display:none"></img>
         <div id="info" style="display:none">
-          <br/><br/><br/><br/><br/>
+          <br/>
           <table id = "info_table">
             <tr>
               <th>Email ID: </th>
               <td id="email_col"></td>
+            
             </tr>
+          
             <tr>
               <th>First Name: </th>
               <td id="first_name_col"></td>
             </tr>
+          
             <tr>
               <th>Last Name: </th>
               <td id="last_name_col"></td>
-           </tr>
+            </tr>
+          
            <tr>
               <th>Phone: </th>
               <td id="phone_col"></td>
-            </tr>
+           </tr>
+          
             <tr>
               <th>Points: </th>
               <td id="points_col"></td>
             </tr>
           </table>
-          <input id="add_rewards" type="text"/>&nbsp;&nbsp;<input type="submit" value="Add" onclick="addPoints()"/><br/>
-          <input id="redeem_rewards" type="text"/>&nbsp;&nbsp;<input type="submit" value="Redeem" onclick="redeemPoints()"/><br/>
+        </br>
+          <input id="add_rewards" type="text"/>&nbsp;&nbsp;<input type="submit" class="buttons" value="Add" onclick="addPoints()"/><br/>
+          <input id="redeem_rewards" type="text"/>&nbsp;&nbsp;<input type="submit" class="buttons"value="Redeem" onclick="redeemPoints()"/><br/>
         </div>
         <!--<h2 id="error" style="display:none;">You are not authorized ! </h2>-->
     </div>

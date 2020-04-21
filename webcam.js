@@ -129,8 +129,8 @@ console.log(userName);
  //update config
 AWS.config.update({
   region: 'us-east-2',
-    accessKeyId:'access',
-     secretAccessKey: 'secret',
+    accessKeyId:'AKIAWYV5ST2BCSEUJOWJ',
+     secretAccessKey: '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',
  
 });
 
@@ -192,8 +192,8 @@ var myParam = 'sulalitha01@gmail.com';
       var fileKey = fileName;
      AWS.config.update({
   region: 'us-east-2',
-    accessKeyId:'access',
-     secretAccessKey: 'secret',
+    accessKeyId:'AKIAWYV5ST2BCSEUJOWJ',
+     secretAccessKey: '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',
  
 });
 
@@ -397,8 +397,8 @@ function display_details(s3_imagename)
   AWS.config.update({
       signatureVersion: 'v4',
       region: 'us-east-1',
-      accessKeyId: 'access',
-      secretAccessKey: 'secret'
+      accessKeyId: 'AKIAWYV5ST2BCSEUJOWJ',
+      secretAccessKey: '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'
   });
   
   var bucket = new AWS.S3({params: {Bucket: 'rewardsprgmcustimages'}});

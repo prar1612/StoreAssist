@@ -1,5 +1,6 @@
 # StoreAssist
 Cloud Services Project - StoreAssist by Team SaaS<br/>
+Team Members: Akanksha Jaiswal, Jyothi H R, Manasi Sadanand Pai and Prarthana Hemanth
 
 StoreAssist is an app built on AWS which would be a one stop portal for employees working at a large Store/Super Market say Target, Walmart etc.<br/>
 
@@ -22,6 +23,8 @@ The AWS Services used are:<br/>
 •	AWS Lambda<br/>
 •	AWS API Gateway<br/>
 •	AWS Lex<br/>
+•	AWS R53<br/>
+•	AWS CloudFront<br/>
 AWS Code Pipeline is used for CICD.
 
 

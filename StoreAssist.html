@@ -28,6 +28,12 @@
   background-repeat: no-repeat;
 
 }
+.page-header {
+  height: 200px;
+  margin-top: 0px;
+  background-size: cover;
+  background-image: url(banner.png);
+}	
 
 </style>
 <head>
@@ -54,9 +60,9 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   
 </head>
-<body style="background:aliceblue">
+<body style="background:beige">
+	<h1 class="page-header"></h1>
 	<div class="container" >
-		<h2>StoreAssist</h2>
 		<ul class="nav nav-tabs">
 			<li class="active"><a href="#home">Add a New Member</a></li>
 			<li  onclick="retrieve();"><a href="#menu2">Retrieve a Member</a></li>

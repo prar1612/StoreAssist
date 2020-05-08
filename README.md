@@ -5,7 +5,7 @@ Team Members: Akanksha Jaiswal, Jyothi H R, Manasi Sadanand Pai and Prarthana He
 StoreAssist is an app built on AWS which would be a one stop portal for employees working at a large Store/Super Market say Target, Walmart etc.<br/>
 
 
-The app is accessible at :https://storeassist.auth.us-east-2.amazoncognito.com/login?response_type=token&client_id=2t1kmm2o49pa0148dd1hopfslo&redirect_uri=https://storeassist.manasipai.com/StoreAssist.html <br/>
+The app is accessible at :https://storeassist.manasipai.com/ <br/>
 
 # Functionalities:<br/>
 •	Capability to add in customers to the store’s rewards program. Here along with the basic details of the customer like Name, Email ID, Phone No., we would also take a picture of the customer and store it.<br/>

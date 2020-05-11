@@ -5,10 +5,10 @@ import { parse, format } from 'fecha';
 const URL = 'https://spreadsheets.google.com/feeds/list/1OZbJNVLZ9TMXs6wJgAJfXFUGvtq2ZICzl7Vyr-gEH_8/od6/public/values?alt=json';
 
 const T = new Twit({
-    consumer_key:         'Q5YqR5BIguqmD9GTSGD4g4U7y',
-    consumer_secret:      'HmcKn9Ym5QCz9aejBXoxuFcfCsiqbU8Tp855gt1mQrMFAe5tUw',
-    access_token:         '1176568093276958720-I838s52oHHtETHcDoiEBHmT7zRezD5',
-    access_token_secret:  'rYOdZehC9AoZyXrMZVBMLn1KfUSqrIRnqlKpRTeT6CQuI'
+    consumer_key:         '--consumerkey--',
+    consumer_secret:      '--consumersecret--',
+    access_token:         '--accesskey--',
+    access_token_secret:  '--accesssecret--'
   });
 
 // convert Google sheets date string to javascript Date object
@@ -40,18 +40,20 @@ const previousDate = await T.get('statuses/user_timeline', { screen_name: 'Manas
 console.log('\n previousDate:', previousDate);
 
 // Postings added since last tweet
-const newPostings = arr.filter(
+const newPostings = arr.find(
 (post: any) =>
     post.gsx$offerdate.$t &&
     cellToDate(post.gsx$offerdate.$t) > previousDate
 );
 
-    for (const post of newPostings) {
+   // for (const post of newPostings) {
+       const post = newPostings;
+       console.log('\n post:', post);
         const status = postToStatus(post);
         await T.post('statuses/update', { status: status })
             .then((res: any) => console.log('\n Data:', res.data.id))
             .catch((err: Error) => console.log('\n Error:', err.message));
-    }
+  //  }
 
             
    
